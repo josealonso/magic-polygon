@@ -18,6 +18,20 @@ magicMatic.network = 'matic';
 export const maticWeb3 = new Web3(magicMatic.rpcProvider);
 
 /**
+ * Configure localhost Connection
+ */
+const customNodeOptions = {
+  rpcUrl: 'http://127.0.0.1:7545', // Your own node URL
+  chainId: 1011, // Your own node's chainId    // TODO
+};
+
+// Setting network to localhost blockchain
+const magic = new Magic(process.env.REACT_APP_MAGIC_PUBLISHABLE_KEY,
+  { network: customNodeOptions }
+);
+//////////////////////////////////////////////
+
+/**
  * Configure Ropsten Connection
  */
 

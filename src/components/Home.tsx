@@ -6,16 +6,22 @@ import ContractCall from "./ContractCall";
 import SendTransaction from './SendTransaction';
 import Info from "./Info";
 import { abi } from '../contract/abi.js';
+import { AbiItem } from "web3-utils";
+import { MagicUserMetadata } from "magic-sdk";
 
 export default function Home() {
+  const abiItem: AbiItem = {
+    type: "function"
+  };
   const [magic, setMagic] = useState(magicEthereum);
   const web3 = magic.network === "ethereum" ? ethWeb3 : maticWeb3;
-  const [userMetadata, setUserMetadata] = useState();
+  // const [user, setUser] = useState<IUser>({name: 'Jon'});
+  const [userMetadata, setUserMetadata] = useState<MagicUserMetadata>({ email: '', issuer: '', phoneNumber: '', publicAddress: '' });
   const [balance, setBalance] = useState('...');
   const network = magic.network === "ethereum" ? 'ethereum' : 'matic';
   const ropstenContractAddress = '0x3EA3913A352cDd49889c7b0dEc8Dd9491d063453';
   const maticContractAddress = '0xfD827cC6d5b959287D7e1680dBA587ffE5dFcbB4';
-  const contract = new web3.eth.Contract(abi, network === "ethereum" ? ropstenContractAddress : maticContractAddress);
+  const contract = new web3.eth.Contract(abiItem, network === "ethereum" ? ropstenContractAddress : maticContractAddress);
   const [message, setMessage] = useState('...');
   const history = useHistory();
 
@@ -36,13 +42,14 @@ export default function Home() {
     });
   }, [magic]);
 
-   const handleChangeNetwork = (e) => {
+  const handleChangeNetwork = (e: { target: { value: string; }; }) => {
     e.target.value === 'ethereum' ? setMagic(magicEthereum) : setMagic(magicMatic);
     fetchBalance(userMetadata.publicAddress);
     fetchContractMessage();
   }
 
-  const fetchBalance = (address) => {
+  const fetchBalance = (address: MagicUserMetadata["publicAddress"]) => {
+    // @ignore-ts
     web3.eth.getBalance(address).then(bal => setBalance(web3.utils.fromWei(bal)))
   }
 
@@ -53,7 +60,7 @@ export default function Home() {
       <>
         <Info handleChangeNetwork={handleChangeNetwork} balance={balance} user={userMetadata} magic={magic} />
         <SendTransaction web3={web3} network={network} publicAddress={userMetadata.publicAddress} fetchBalance={fetchBalance} />
-        <ContractCall network={network} contract={contract} user={userMetadata} fetchBalance={fetchBalance} message={message} fetchContractMessage={fetchContractMessage} />  
+        <ContractCall network={network} contract={contract} user={userMetadata} fetchBalance={fetchBalance} message={message} fetchContractMessage={fetchContractMessage} />
       </>
     ) : <Loading />
   );
