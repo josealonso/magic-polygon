@@ -2,7 +2,8 @@ import { MagicUserMetadata } from "magic-sdk";
 import React, { useCallback } from "react";
 import { useHistory } from "react-router";
 
-let user: MagicUserMetadata = { email: '', issuer: '', phoneNumber: '', publicAddress: '' };
+// let magicUserMetadata: MagicUserMetadata = { email: '', issuer: '', phoneNumber: '', publicAddress: '' };
+// @ts-ignore
 export default function Info({ user, magic, handleChangeNetwork, balance }) {
   const history = useHistory();
 
@@ -23,8 +24,8 @@ export default function Info({ user, magic, handleChangeNetwork, balance }) {
         <h1>Network</h1>
         <div className="info">
           <select name="network" onChange={(e) => handleChangeNetwork(e)}>
-            <option value="ethereum">Ethereum (Ropsten Testnet)</option>
             <option value="matic">Matic (Mumbai Testnet)</option>
+            <option value="ethereum">Local Testnet</option>
           </select>
         </div>
         <h1>Public Address</h1>

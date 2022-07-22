@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from "react";
+import React, { ChangeEvent, useCallback, useState } from "react";
 import { useHistory } from "react-router";
-import { magicEthereum } from "../magic";
+import { magicMatic, magicLocal} from "../magic";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -15,7 +15,7 @@ export default function Login() {
     setIsLoggingIn(true);
 
     try {
-      await magicEthereum.auth.loginWithMagicLink({
+      await magicMatic.auth.loginWithMagicLink({
         email,
         redirectURI: new URL("/callback", window.location.origin).href,
       });
@@ -28,7 +28,7 @@ export default function Login() {
   /**
    * Saves the value of our email input into component state.
    */
-  const handleInputOnChange = useCallback(event => {
+  const handleInputOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   }, []);
 
@@ -38,6 +38,7 @@ export default function Login() {
       <input
         type="email"
         name="email"
+        // @ts-ignore
         required="required"
         placeholder="Enter your email"
         onChange={handleInputOnChange}

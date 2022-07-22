@@ -21,25 +21,27 @@ export default function ContractCall(myContract: any) {
   // Update contract `message` value on the blockchain
   const updateContractMessage = async () => {
     if (!newMessage) return;
-    disableForm(updateBtnRef);
+    disableForm();
     const receipt = await myContract.contract.methods.update(newMessage).send({ from: myContract.user.publicAddress });
     setTxnHash(receipt.transactionHash);
-    enableForm(updateBtnRef);
+    enableForm();
   }
 
   // Disable input form while the transaction is being confirmed
-  const disableForm = (updateBtnRef: any) => {
+  const disableForm = () => {
     setTxnHash(''); // Clear link to previous transaction hash
     setDisabled(true);
+    // @ts-ignored
     updateBtnRef.current.innerText = 'Submitted...';
   }
 
   // Re-enable input form once the transaction is confirmed
-  const enableForm = (updateBtnRef: any) => {
+  const enableForm = () => {
     setDisabled(false);
     setNewMessage('');
     myContract.fetchBalance(myContract.user.publicAddress);
     myContract.fetchContractMessage()
+    // @ts-ignored
     updateBtnRef.current.innerText = 'Update';
   }
 

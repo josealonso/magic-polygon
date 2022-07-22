@@ -1,6 +1,8 @@
 import { Magic } from 'magic-sdk';
 import Web3 from 'web3';
 
+const APP_MAGIC_KEY =
+  process.env.REACT_APP_MAGIC_PUBLISHABLE_KEY !== undefined ? process.env.REACT_APP_MAGIC_PUBLISHABLE_KEY : '';
 /**
  * Configure Polygon Connection
  */
@@ -10,7 +12,7 @@ const polygonNodeOptions = {
 };
 
 export const magicMatic = new Magic(
-  process.env.REACT_APP_MAGIC_PUBLISHABLE_KEY,
+  APP_MAGIC_KEY,
   { network: polygonNodeOptions }
 );
 magicMatic.network = 'matic';
@@ -26,24 +28,28 @@ const customNodeOptions = {
 };
 
 // Setting network to localhost blockchain
-const magic = new Magic(process.env.REACT_APP_MAGIC_PUBLISHABLE_KEY,
+export const magicLocal = new Magic(
+  APP_MAGIC_KEY,
   { network: customNodeOptions }
 );
+magicLocal.network = 'localhost';
+export const localWeb3 = new Web3(magicLocal.rpcProvider);
+
 //////////////////////////////////////////////
 
 /**
  * Configure Ropsten Connection
  */
 
-const ropstenNodeOptions = {
-  rpcUrl: process.env.REACT_APP_ROPSTEN_RPC,
-  chainId: 3,
-};
+// const ropstenNodeOptions = {
+//   rpcUrl: process.env.REACT_APP_ROPSTEN_RPC,
+//   chainId: 3,
+// };
 
-export const magicEthereum = new Magic(
-  process.env.REACT_APP_MAGIC_PUBLISHABLE_KEY,
-  { network: ropstenNodeOptions }
-);
-magicEthereum.network = 'ethereum';
+// export const magicEthereum = new Magic(
+//   APP_MAGIC_KEY,
+//   { network: ropstenNodeOptions }
+// );
+// magicEthereum.network = 'ethereum';
 
-export const ethWeb3 = new Web3(magicEthereum.rpcProvider);
+// export const ethWeb3 = new Web3(magicEthereum.rpcProvider);

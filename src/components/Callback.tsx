@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router";
-import { magicEthereum } from "../magic";
+// import { magicEthereum } from "../magic";
+import { magicMatic } from "../magic";
 import Loading from "./Loading";
 
 export default function Callback() {
@@ -8,7 +9,7 @@ export default function Callback() {
 
   useEffect(() => {
     // On mount, we try to login with a Magic credential in the URL query.
-    magicEthereum.auth.loginWithCredential().finally(() => {
+    magicMatic.auth.loginWithCredential().finally(() => {
       history.push("/");
     });
   }, []);
